@@ -3,6 +3,7 @@ package org.ggp.base.apps.kiosk.games;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Set;
+import java.util.HashSet;
 
 import org.ggp.base.apps.kiosk.templates.CommonGraphics;
 import org.ggp.base.apps.kiosk.templates.GameCanvas_FancyGrid;
@@ -33,10 +34,29 @@ public class Catch11Canvas extends GameCanvas_FancyGrid {
 
     @Override
     protected Set<String> getLegalMovesForCell(int xCell, int yCell) {
-        if (gameStateHasFactsMatching("\\( pos_" + myRole + " " + (xCell-1) + " " + (11-yCell) + " \\)").size() > 0) {
-            return gameStateHasLegalMovesMatching(".*");
+        int x = xCell - 1;
+        int y = 11 - yCell;
+        if (gameStateHasFactsMatching("\\( pos_"+myRole+" "+(x-1)+" "+y+" \\)").size() > 0 &&
+            gameStateHasLegalMovesMatching("e").size() > 0) {
+            return gameStateHasLegalMovesMatching("e");
         }
-        return gameStateHasLegalMovesMatching("foobar");
+        else if (gameStateHasFactsMatching("\\( pos_"+myRole+" "+(x+1)+" "+y+" \\)").size() > 0 &&
+            gameStateHasLegalMovesMatching("w").size() > 0) {
+            return gameStateHasLegalMovesMatching("w");
+        }
+        else if (gameStateHasFactsMatching("\\( pos_"+myRole+" "+x+" "+(y-1)+" \\)").size() > 0 &&
+            gameStateHasLegalMovesMatching("n").size() > 0) {
+            return gameStateHasLegalMovesMatching("n");
+        }
+        else if (gameStateHasFactsMatching("\\( pos_"+myRole+" "+x+" "+(y+1)+" \\)").size() > 0 &&
+            gameStateHasLegalMovesMatching("s").size() > 0) {
+            return gameStateHasLegalMovesMatching("s");
+        }
+        else if (gameStateHasFactsMatching("\\( pos_"+myRole+" "+x+" "+y+" \\)").size() > 0 &&
+            gameStateHasLegalMovesMatching("noop").size() > 0) {
+            return gameStateHasLegalMovesMatching("noop");
+        }
+        return new HashSet<String>();
     }
 
     @Override
@@ -46,21 +66,21 @@ public class Catch11Canvas extends GameCanvas_FancyGrid {
             int height = g.getClipBounds().height;
             g.setColor(Color.LIGHT_GRAY);
             g.fillRect(2,2,width-2,height-2);
-
-            //CommonGraphics.drawSelectionBox(g);
-
         }
     }
+
     @Override
-    protected void renderCellContent(Graphics g, Set<String> facts) {
+    protected void renderCellContent(Graphics g, int xCell, int yCell, Set<String> facts) {
+        Set<String> moves = getLegalMovesForCell(xCell,yCell);
+        if (moves.size() > 0) { CommonGraphics.drawSelectionBox(g); }
+
         for (String theFact: facts) {
-            String[] cellFacts = theFact.split(" ");
-            //System.out.println("theFact: " + theFact);
-            if(cellFacts[1].equals("pos_rabbit")) {
+            String[] cellFact = theFact.split(" ");
+            if(cellFact[1].equals("pos_rabbit")) {
                 g.setColor(Color.BLACK);
                 CommonGraphics.fillWithString(g, "R", 1.2);
             }
-            else if(cellFacts[1].equals("pos_fox")) {
+            else if(cellFact[1].equals("pos_fox")) {
                 g.setColor(Color.BLACK);
                 CommonGraphics.fillWithString(g, "F", 1.2);
             }
