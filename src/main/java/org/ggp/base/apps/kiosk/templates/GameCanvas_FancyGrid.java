@@ -98,6 +98,9 @@ public abstract class GameCanvas_FancyGrid extends GameCanvas_SimpleGrid {
             renderCellContent(g, theFact);
         }
     }
+    protected void renderCellContent(Graphics g, int xCell, int yCell, Set<String> theFacts) {
+        renderCellContent(g,theFacts);
+    }
 
     protected boolean useGridVisualization() { return true; }
 
@@ -149,7 +152,7 @@ public abstract class GameCanvas_FancyGrid extends GameCanvas_SimpleGrid {
     @Override
     protected final void renderCell(Graphics g, int xCell, int yCell) {
         renderCellBackground(g, xCell, yCell);
-        renderCellContent(g, getCachedFactsAboutCell(xCell, yCell));
+        renderCellContent(g, xCell, yCell, getCachedFactsAboutCell(xCell, yCell));
         if(useGridVisualization()) CommonGraphics.drawCellBorder(g);
         renderCellForeground(g, xCell, yCell);
         if(!currentSelectedMove.isEmpty()) {
