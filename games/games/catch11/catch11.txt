@@ -1,0 +1,5 @@
+The fox has to catch the rabbit in 100 moves on a 11x11 board.
+Each can move one step horizontally or vertically or none (noop) per move.
+The fox catched the rabbit when they are side by side or on top of each other.
+In the middle there is a blocked field, which one can not be move into.
+
