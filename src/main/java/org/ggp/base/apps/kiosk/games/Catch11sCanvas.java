@@ -15,13 +15,13 @@ import org.ggp.base.apps.kiosk.templates.GameCanvas_FancyGrid;
  *
  * @author Sam Schreiber
  */
-public class Catch11Canvas extends GameCanvas_FancyGrid {
+public class Catch11sCanvas extends GameCanvas_FancyGrid {
     public static final long serialVersionUID = 0x1;
 
     @Override
-    public String getGameName() { return "Catch 11"; }
+    public String getGameName() { return "Catch 11 (sequential)"; }
     @Override
-    protected String getGameKey() { return "catch11"; }
+    protected String getGameKey() { return "catch11s"; }
     @Override
     protected int getGridHeight() { return 11; }
     @Override
@@ -37,7 +37,7 @@ public class Catch11Canvas extends GameCanvas_FancyGrid {
         int x = xCell - 1;
         int y = 11 - yCell;
         Set<String> res = new HashSet<String>();
-        if (gameStateHasFactsMatching("\\( pos_"+myRole+" "+(x-1)+" "+y+" \\)").size() > 0 &&
+        if      (gameStateHasFactsMatching("\\( pos_"+myRole+" "+(x-1)+" "+y+" \\)").size() > 0 &&
             gameStateHasLegalMovesMatching("^e$").size() > 0) {
         	res.add("e");
             return res;
